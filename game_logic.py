@@ -5,17 +5,16 @@ File Name: game_logic.py
 Description: Handles the player's standard interations with the Minesweeper board. 
     Includes --> 1) Keeping track of mines, 2) Placing flags, 3) Revealing cells, and 4) Victory/game-over states
 
-All Collaborators: Group 4, ChatGPT
+All Collaborators: Group 4, ChatGPT, Group 5
 
 Other sources for code: ChatGPT
 
 Date Created: 8/29/2025
 
-Last Updated: 9/16/2025
+Last Updated: 9/26/2025
 """
 from board_manager import BoardManager
-
-
+from sound_manager import SoundManager
 
 class GameLogic:
     """
@@ -27,7 +26,7 @@ class GameLogic:
     """
 
     # Source: Original work combined with ChatGPT
-    def __init__(self, board_manager: BoardManager):
+    def __init__(self, board_manager: BoardManager, sound_manager: SoundManager):
         """
         Initializes game logic for the board the player will interact with
 
@@ -49,6 +48,8 @@ class GameLogic:
 
         self.first_click = True # Flag to indicate it is the first click
 
+        self.sound_manager = sound_manager # Sound manager
+
     # Source: Original work combined with ChatGPT
     def start_game(self, mine_count, safe_cell=None):
         """
@@ -67,6 +68,8 @@ class GameLogic:
         self.game_over = False
         self.victory = False
         self.first_click = True # ensure that first_click is set to True for resets
+
+        self.sound_manager.play_background() # Play background music
 
     # Source: Original work combined with ChatGPT
     def toggle_flag(self, row, col):
@@ -104,7 +107,7 @@ class GameLogic:
                 return True
             return False
 
-    # Source: Original work combined with ChatGPT
+    # Source: Original work combined with ChatGPT, Group 5
     def reveal_cell(self, row, col):
         """
         Function called whenever the player reveals a cell (left click). Checks if the cell can be revealed, triggers game-over if the player uncovers a mine.
@@ -137,6 +140,7 @@ class GameLogic:
         if cell.is_mine:
             self.game_over = True
             self.victory = False
+            self.sound_manager.play_game_over() # Play game over sound
             return
 
         # If the revealed cell has no adjacent mines, recursively reveal all surrounding cells.
@@ -151,7 +155,7 @@ class GameLogic:
 
         self.check_victory() # Check for a victory state after every time a cell is revealed
 
-    # Source: ChatGPT
+    # Source: ChatGPT, Group 5
     def check_victory(self):
         """
         Helper function that checks for victory state.
@@ -173,3 +177,4 @@ class GameLogic:
         
         self.victory = True
         self.game_over = True
+        self.sound_manager.play_victory() # Play victory sound

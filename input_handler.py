@@ -5,14 +5,16 @@ File Name: input_handler.py
 Description: Handles user input events for the Minesweeper game. 
     Includes --> 1) Processing left clicks (reveal cells), 2) Processing right clicks (toggle flags), and 3) Coordinating between game logic and UI updates
 
-All Collaborators: Group 4, ChatGPT
+All Collaborators: Group 4, ChatGPT, Group 5
 
 Other sources for code: ChatGPT
 
 Date Created: 8/29/2025
 
-Last Updated: 9/16/2025
+Last Updated: 9/26/2025
 """
+
+from sound_manager import SoundManager
 
 class InputHandler:
     """
@@ -20,14 +22,16 @@ class InputHandler:
     Includes --> 1) Processing left clicks (reveal cells), 2) Processing right clicks (toggle flags), and 3) Coordinating between game logic and UI updates
     """
 
-    # Source: ChatGPT
-    def __init__(self, game_logic, ui):
+    # Source: ChatGPT, Group 5
+    def __init__(self, game_logic, ui, sound_manager: SoundManager):
         # Store reference to the game logic instance for making game state changes
         self.game = game_logic
         # Store reference to the user interface instance for updating the display
         self.ui = ui
+        # Sound manager
+        self.sound_manager = sound_manager
 
-    # Source: ChatGPT
+    # Source: Group 5
     def handle_left_click(self, row, col):
         # Tell the game logic to reveal the clicked cell
         self.game.reveal_cell(row, col)
@@ -38,8 +42,10 @@ class InputHandler:
 
             # Pass victory status (true/false)
             self.ui.show_game_over(self.game.victory)
+        else:
+            self.sound_manager.play_uncover() # Play uncover sound
 
-    # Source: Original work combined with ChatGPT
+    # Source: Original work combined with ChatGPT, Group 5
     def handle_right_click(self, row, col):
         # Don't try to flag an uncovered cell or if the game is over
         if self.game.game_over:
@@ -50,6 +56,7 @@ class InputHandler:
             return
 
         changed = self.game.toggle_flag(row, col) # toggle the flag and store if it was toggled
+        self.sound_manager.play_flag()
         # if the flag was toggled, update the board
         if changed:
             self.ui.update_board()

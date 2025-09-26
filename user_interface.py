@@ -5,17 +5,18 @@ Description:  File handles user interactions with the game board, mine count inp
 dynamic resizing of the grid. Shows the state of cells based on gameplay (such as number color). Works with minesweeper_gui.py to
 display the full interactabble GUI.
 
-All Collaborators: Group 4, ChatGPT
+All Collaborators: Group 4, ChatGPT, Group 5
 
 Other sources for code: ChatGPT
 
 Date Created: 8/29/2025
 
-Last Updated: 9/18/2025
+Last Updated: 9/26/2025
 """
 # ----- user_interface.py -----
 import tkinter as tk
 from tkinter import messagebox
+from sound_manager import SoundManager
 
 # Source: Original work
 # Number colors
@@ -31,8 +32,8 @@ NUMBER_COLORS = {
 }
 
 class UserInterface:
-    # Source: Original work combined with ChatGPT
-    def __init__(self, root, game_logic, input_handler):
+    # Source: Original work combined with ChatGPT, Group 5
+    def __init__(self, root, game_logic, input_handler, sound_manager: SoundManager):
         self.root = root  # Window
         self.game = game_logic  # Game logic
         self.input = input_handler  # Left and right click actions
@@ -65,6 +66,9 @@ class UserInterface:
         self.grid_frame = tk.Frame(self.root)
         self.grid_frame.pack(padx=10, pady=10)
 
+        # Sound manager
+        self.sound_manager = sound_manager
+
     # Source: ChatGPT
     def start_game(self):
         # Start game after validating mine input
@@ -89,10 +93,11 @@ class UserInterface:
         self.mine_label.pack_forget()
         self.header_frame.pack_forget()
 
-    # Source: ChatGPT
+    # Source: ChatGPT, Group 5
     def show_mine_prompt(self, default_same=None):
         # Show mine entry again for replay
         self.clear_board_widgets()
+        self.sound_manager.play_start() # Play start music
         if default_same is not None:
             self.mine_entry.delete(0, tk.END)
             self.mine_entry.insert(0, str(default_same))
