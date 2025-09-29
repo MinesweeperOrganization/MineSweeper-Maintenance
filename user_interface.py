@@ -81,9 +81,10 @@ class UserInterface:
             return
 
         self.hide_mine_prompt()
+        self.status_label.config(text="Minesweeper")
         self.game.start_game(mines)
         self.build_board()
-
+        
         # create once
         self.status_var = tk.StringVar()
         self.status_label = tk.Label(
