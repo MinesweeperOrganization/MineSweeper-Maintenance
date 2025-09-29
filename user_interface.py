@@ -214,7 +214,7 @@ class UserInterface:
 
         if choice is True: 
             # Restart with same mine count
-            self.game.start_game(self.game.total_mines)
+            self.game.start_game(self.game.total_mines, self.difficulty.get())
             self.build_board()
             self.status_var.set(f"Game in progress — Mines: {self.game.total_mines} | Flags remaining: {self.game.total_mines} | Turn: Player's Turn")
         elif choice is False:
