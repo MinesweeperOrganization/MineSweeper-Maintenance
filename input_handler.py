@@ -34,22 +34,23 @@ class InputHandler:
     # Source: Group 5
     def handle_left_click(self, row, col):
         # Tell the game logic to reveal the clicked cell
-        self.game.reveal_cell(row, col)
- 
-        # Update the visual board display's new state
-        self.ui.update_board()
-        # Check for victory or loss condition
-        if self.game.game_over:
+        if self.game.player_turn: #only allow player to click if it is their turn
+            self.game.reveal_cell(row, col)
+    
+            # Update the visual board display's new state
+            self.ui.update_board()
+            # Check for victory or loss condition
+            if self.game.game_over:
 
-            # Pass victory status (true/false)
-            self.ui.show_game_over(self.game.victory)
-        else:
-            self.sound_manager.play_uncover() # Play uncover sound
+                # Pass victory status (true/false)
+                self.ui.show_game_over(self.game.victory)
+            else:
+                self.sound_manager.play_uncover() # Play uncover sound
 
-        self.game.player_turn = False #swap turn to AI after player click
-        self.ui.update_board() #update board before AI turn to show it is AI's turn
+            self.game.player_turn = False #swap turn to AI after player click
+            self.ui.update_board() #update board before AI turn to show it is AI's turn
 
-        self.ui.root.after(2000, self.ai_turn) #delay AI turn by 2 seconds
+            self.ui.root.after(2000, self.ai_turn) #delay AI turn by 2 seconds
 
 
 
