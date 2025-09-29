@@ -9,10 +9,10 @@ The game board consists of cells that may contain mines or numbers indicating ho
 ### Prerequisites
 - Python 3.x installed on your system
 - Tkinter (usually included with Python)
-- pip install playsound3
+- playsound3 (installed with pip)
 
 ### Running the Game
-first pip install playsound3
+**If playsound3 is not installed**: Run `pip install playsound3` in a terminal window
 1. Clone or download this repository
 2. Navigate to the project directory
 3. Run the main file:
@@ -51,6 +51,8 @@ first pip install playsound3
   - Flags mark suspected mines
   - Mines show as bombs when revealed
   - Empty cells are automatically revealed
+- **Audio Feedback**: Sound effects play when flagging, uncovering, and on win/loss
+- **Music**: Music plays in the background on the start menu and while playing
 - **Replay Options**: After winning or losing, choose to play again with same settings or new mine count
 
 ## Project Architecture
@@ -63,6 +65,7 @@ The project is organized into modular components:
 - **`game_logic.py`**: Handles game rules, cell revealing, flag management, and victory conditions
 - **`input_handler.py`**: Processes user input (clicks) and coordinates between game logic and UI
 - **`user_interface.py`**: Creates and manages the Tkinter GUI, displays the game board
+- **`sound_manager.py`**: Manages audio playback
 
 ### Key Features
 - **Modular Design**: Clean separation of concerns between game logic, UI, and input handling
@@ -102,10 +105,11 @@ The game features a clean, intuitive interface:
 - `tkinter`: Built-in Python GUI library
 - `random`: For mine placement
 - `messagebox`: For game over dialogs
+- `playsound3`: For playing audio
 
 ### System Requirements
 - Python 3.x
 - Tkinter support (included with most Python installations)
-- playsound3 module pip installed
+- playsound3 module installed in Python 3.x using pip
 - Any operating system that supports Python and Tkinter
 
