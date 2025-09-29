@@ -235,19 +235,16 @@ class GameLogic:
                             if not self.board.get_cell(r, c).is_covered and self.board.get_cell(r, c).adjacent > 0]
             #iterates through all numbered cells 
             for row, col in numbered_cells:
-                print(f"AI checking cell at ({row}, {col}) with number {self.board.get_cell(row, col).adjacent}")
                 #list of covered neighbors
                 covered_neighbors = self.get_covered_neighbors(row, col)
                 if len(covered_neighbors) == self.board.get_cell(row, col).adjacent - len(self.get_flagged_neighbors(row, col)):
                     for nr, nc in covered_neighbors:
                         self.toggle_flag(nr, nc)
-                        print(f"AI flagged cell at ({nr}, {nc})")    
                     self.player_turn = True
                 if len(self.get_flagged_neighbors(row, col)) == self.board.get_cell(row, col).adjacent:
                     covered_neighbors2 = self.get_covered_neighbors(row, col)
                     for nr, nc in covered_neighbors2:
                         self.reveal_cell(nr, nc)
-                        print(f"AI revealed cell at ({nr}, {nc})")
                     self.player_turn = True
             if self.player_turn == False:
                 covered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
