@@ -59,6 +59,7 @@ class InputHandler:
         
         self.ui.update_board() #update board after AI turn
         if self.game.game_over:
+            self.game.victory = True #set victory to true if AI causes game over
             self.ui.show_game_over(self.game.victory)
         else:
             self.sound_manager.play_uncover() # Play uncover sound
