@@ -68,15 +68,16 @@ class InputHandler:
     # Source: Original work combined with ChatGPT, Group 5
     def handle_right_click(self, row, col):
         # Don't try to flag an uncovered cell or if the game is over
-        if self.game.game_over:
-            return
-        cell = self.game.board.get_cell(row, col) # get the cell that was clicked
-        # Ignore attempts to flag uncovered cells
-        if not cell.is_covered:
-            return
+        if self.game.player_turn: #only allow player to click if it is their turn
+            if self.game.game_over:
+                return
+            cell = self.game.board.get_cell(row, col) # get the cell that was clicked
+            # Ignore attempts to flag uncovered cells
+            if not cell.is_covered:
+                return
 
-        changed = self.game.toggle_flag(row, col) # toggle the flag and store if it was toggled
-        self.sound_manager.play_flag()
-        # if the flag was toggled, update the board
-        if changed:
-            self.ui.update_board()
+            changed = self.game.toggle_flag(row, col) # toggle the flag and store if it was toggled
+            self.sound_manager.play_flag()
+            # if the flag was toggled, update the board
+            if changed:
+                self.ui.update_board()
