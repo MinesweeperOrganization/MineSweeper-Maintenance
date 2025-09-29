@@ -9,8 +9,10 @@ The game board consists of cells that may contain mines or numbers indicating ho
 ### Prerequisites
 - Python 3.x installed on your system
 - Tkinter (usually included with Python)
+- pip install playsound3
 
 ### Running the Game
+first pip install playsound3
 1. Clone or download this repository
 2. Navigate to the project directory
 3. Run the main file:
@@ -104,5 +106,6 @@ The game features a clean, intuitive interface:
 ### System Requirements
 - Python 3.x
 - Tkinter support (included with most Python installations)
+- playsound3 module pip installed
 - Any operating system that supports Python and Tkinter
 
