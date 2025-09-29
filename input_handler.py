@@ -47,10 +47,10 @@ class InputHandler:
             else:
                 self.sound_manager.play_uncover() # Play uncover sound
 
-            self.game.player_turn = False #swap turn to AI after player click
-            self.ui.update_board() #update board before AI turn to show it is AI's turn
+                self.game.player_turn = False #swap turn to AI after player click
+                self.ui.update_board() #update board before AI turn to show it is AI's turn
 
-            self.ui.root.after(2000, self.ai_turn) #delay AI turn by 2 seconds
+                self.ui.root.after(2000, self.ai_turn) #delay AI turn by 2 seconds
 
 
 
