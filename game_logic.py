@@ -54,8 +54,10 @@ class GameLogic:
 
         self.sound_manager = sound_manager # Sound manager
 
+        self.difficulty = "Easy"  # Default difficulty level
+
     # Source: Original work combined with ChatGPT
-    def start_game(self, mine_count, safe_cell=None):
+    def start_game(self, mine_count, difficulty, safe_cell=None):
         """
         Function that begins the game
 
@@ -63,7 +65,8 @@ class GameLogic:
 
         Output: None
         """
-
+        self.difficulty = difficulty #set difficulty level
+        print(difficulty)
         self.total_mines = mine_count #The user-given number of mines (10 - 20)
 
         self.flags = 0 # Begin to count of the number of flags the user has placed

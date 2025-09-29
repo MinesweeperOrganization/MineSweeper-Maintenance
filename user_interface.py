@@ -46,10 +46,22 @@ class UserInterface:
         self.mine_entry.insert(0, "10")
         self.mine_entry.bind("<Return>", lambda event: self.start_game())  # Bind Enter key to start game
         self.start_button = tk.Button(self.header_frame, text="Start Game", command=self.start_game, font=("Segoe UI", 10, "bold"))
+        self.difficulty = tk.StringVar(value="Easy")
+        self.easy_button = tk.Radiobutton(self.header_frame, text="Easy", variable=self.difficulty, value="Easy", font=("Segoe UI", 10))
+        self.medium_button = tk.Radiobutton(self.header_frame, text="Medium", variable=self.difficulty, value="Medium", font=("Segoe UI", 10))
+        self.hard_button = tk.Radiobutton(self.header_frame, text="Hard", variable=self.difficulty, value="Hard", font=("Segoe UI", 10))
+
+        
         self.header_frame.pack(pady=5)
         self.mine_label.pack(side=tk.LEFT)
         self.mine_entry.pack(side=tk.LEFT)
         self.start_button.pack(side=tk.LEFT, padx=5)
+        self.easy_button.pack(side=tk.LEFT, padx=5)
+        self.medium_button.pack(side=tk.LEFT, padx=5)
+        self.hard_button.pack(side=tk.LEFT, padx=5)
+
+
+
         
         # Bind F11 to toggle fullscreen and Escape to exit fullscreen
         self.root.bind("<F11>", self.toggle_fullscreen)
@@ -82,7 +94,7 @@ class UserInterface:
 
         self.hide_mine_prompt()
         self.status_label.config(text="Minesweeper")
-        self.game.start_game(mines)
+        self.game.start_game(mines, self.difficulty.get())
         self.build_board()
         
         # create once
