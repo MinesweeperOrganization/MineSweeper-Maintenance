@@ -174,6 +174,39 @@ class GameLogic:
 
         self.check_victory() # Check for a victory state after every time a cell is revealed
 
+    def get_covered_neighbors(self, row, col):
+        """
+        Helper function that returns a list of valid neighboring cell coordinates.
+
+        Input: The x/y coordinates of the cell
+
+        Output: List of tuples containing the coordinates of neighboring cells that are covered and not flagged
+        """
+        neighbors = []
+        for r in range(row-1, row+2):
+            for c in range(col-1, col+2):
+                if (r == row and c == col) or r < 0 or c < 0 or r >= self.board.size or c >= self.board.size:
+                    continue
+                if self.board.get_cell(r, c).is_covered and not self.board.get_cell(r, c).is_flagged:
+                    neighbors.append((r, c))
+        return neighbors
+
+    def get_flagged_neighbors(self, row, col):
+        """
+        Helper function that returns a list of valid neighboring cell coordinates.
+
+        Input: The x/y coordinates of the cell
+
+        Output: List of tuples containing the coordinates of neighboring cells that are flagged
+        """
+        neighbors = []
+        for r in range(row-1, row+2):
+            for c in range(col-1, col+2):
+                if (r == row and c == col) or r < 0 or c < 0 or r >= self.board.size or c >= self.board.size:
+                    continue
+                if self.board.get_cell(r, c).is_flagged:
+                    neighbors.append((r, c))
+        return neighbors
 
     def ai_reveal_cell(self):
         """
@@ -197,16 +230,36 @@ class GameLogic:
             self.player_turn = True
             # Important, this is linked with input handler under handle left click
         elif self.difficulty == "Medium": #filler of easy for now
-            # AI randomly selects a covered, unflagged cell to reveal
-            covered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
+            #Gets all revealed numbered cells
+            numbered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
+                            if not self.board.get_cell(r, c).is_covered and self.board.get_cell(r, c).adjacent > 0]
+            #iterates through all numbered cells 
+            for row, col in numbered_cells:
+                print(f"AI checking cell at ({row}, {col}) with number {self.board.get_cell(row, col).adjacent}")
+                #list of covered neighbors
+                covered_neighbors = self.get_covered_neighbors(row, col)
+                if len(covered_neighbors) == self.board.get_cell(row, col).adjacent - len(self.get_flagged_neighbors(row, col)):
+                    for nr, nc in covered_neighbors:
+                        self.toggle_flag(nr, nc)
+                        print(f"AI flagged cell at ({nr}, {nc})")    
+                    self.player_turn = True
+                if len(self.get_flagged_neighbors(row, col)) == self.board.get_cell(row, col).adjacent:
+                    covered_neighbors2 = self.get_covered_neighbors(row, col)
+                    for nr, nc in covered_neighbors2:
+                        self.reveal_cell(nr, nc)
+                        print(f"AI revealed cell at ({nr}, {nc})")
+                    self.player_turn = True
+            if self.player_turn == False:
+                covered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
                             if self.board.get_cell(r, c).is_covered and not self.board.get_cell(r, c).is_flagged]
 
-            if not covered_cells:
-                return  # No cells left to reveal
+                if not covered_cells:
+                    return  # No cells left to reveal
 
-            row, col = random.choice(covered_cells)
-            self.reveal_cell(row, col)
-            self.player_turn = True
+                row, col = random.choice(covered_cells)
+                self.reveal_cell(row, col)
+                print(f"AI randomly revealed cell at ({row}, {col})")
+                self.player_turn = True
             # Important, this is linked with input handler under handle left click
         elif self.difficulty == "Hard": #filler of easy for now
             # AI randomly selects a covered, unflagged cell to reveal
