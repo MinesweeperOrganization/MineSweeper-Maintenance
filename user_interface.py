@@ -204,7 +204,7 @@ class UserInterface:
             # Restart with same mine count
             self.game.start_game(self.game.total_mines)
             self.build_board()
-            self.status_label.config(text=f"New game started with {self.game.total_mines} mines — Good luck!")
+            self.status_var.set(f"Game in progress — Mines: {self.game.total_mines} | Flags remaining: {self.game.total_mines} | Turn: Player's Turn")
         elif choice is False:
             # Ask for new mine count
             self.show_mine_prompt(default_same=self.game.total_mines)
