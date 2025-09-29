@@ -184,17 +184,43 @@ class GameLogic:
         if self.game_over:
             return
 
-        # AI randomly selects a covered, unflagged cell to reveal
-        covered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
-                         if self.board.get_cell(r, c).is_covered and not self.board.get_cell(r, c).is_flagged]
+        if self.difficulty == "Easy":
+            # AI randomly selects a covered, unflagged cell to reveal
+            covered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
+                            if self.board.get_cell(r, c).is_covered and not self.board.get_cell(r, c).is_flagged]
 
-        if not covered_cells:
-            return  # No cells left to reveal
+            if not covered_cells:
+                return  # No cells left to reveal
 
-        row, col = random.choice(covered_cells)
-        self.reveal_cell(row, col)
-        self.player_turn = True
-        # Important, this is linked with input handler under handle left click
+            row, col = random.choice(covered_cells)
+            self.reveal_cell(row, col)
+            self.player_turn = True
+            # Important, this is linked with input handler under handle left click
+        elif self.difficulty == "Medium": #filler of easy for now
+            # AI randomly selects a covered, unflagged cell to reveal
+            covered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
+                            if self.board.get_cell(r, c).is_covered and not self.board.get_cell(r, c).is_flagged]
+
+            if not covered_cells:
+                return  # No cells left to reveal
+
+            row, col = random.choice(covered_cells)
+            self.reveal_cell(row, col)
+            self.player_turn = True
+            # Important, this is linked with input handler under handle left click
+        elif self.difficulty == "Hard": #filler of easy for now
+            # AI randomly selects a covered, unflagged cell to reveal
+            covered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
+                            if self.board.get_cell(r, c).is_covered and not self.board.get_cell(r, c).is_flagged]
+
+            if not covered_cells:
+                return  # No cells left to reveal
+
+            row, col = random.choice(covered_cells)
+            self.reveal_cell(row, col)
+            self.player_turn = True
+            # Important, this is linked with input handler under handle left click
+        
 
     # Source: ChatGPT, Group 5
     def check_victory(self):
