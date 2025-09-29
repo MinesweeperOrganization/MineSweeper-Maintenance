@@ -45,6 +45,8 @@ class UserInterface:
         self.mine_entry = tk.Entry(self.header_frame, width=5, font=("Segoe UI", 11))
         self.mine_entry.insert(0, "10")
         self.mine_entry.bind("<Return>", lambda event: self.start_game())  # Bind Enter key to start game
+        self.board_label = tk.Label(self.header_frame, text="Enter board size (10-20):", font=("Segoe UI", 11))
+        self.board_entry = tk.Entry(self.header_frame, width=5, font=("Segoe UI", 11))
         self.start_button = tk.Button(self.header_frame, text="Start Game", command=self.start_game, font=("Segoe UI", 10, "bold"))
         self.difficulty = tk.StringVar(value="Easy")
         self.easy_button = tk.Radiobutton(self.header_frame, text="Easy", variable=self.difficulty, value="Easy", font=("Segoe UI", 10))
@@ -55,6 +57,8 @@ class UserInterface:
         self.header_frame.pack(pady=5)
         self.mine_label.pack(side=tk.LEFT)
         self.mine_entry.pack(side=tk.LEFT)
+        self.board_label.pack(side=tk.LEFT)
+        self.board_entry.pack(side=tk.LEFT)
         self.start_button.pack(side=tk.LEFT, padx=5)
         self.easy_button.pack(side=tk.LEFT, padx=5)
         self.medium_button.pack(side=tk.LEFT, padx=5)
@@ -91,10 +95,19 @@ class UserInterface:
         except ValueError:
             messagebox.showerror("Invalid Input", "Please enter a number between 10 and 20.")
             return
+        
+        try:
+            board = int(self.board_entry.get())
+            if board < 10 or mines > 20:
+                raise ValueError
+        except ValueError:
+            messagebox.showerror("Invalid Input", "Please enter a number between 10 and 20.")
+            return
 
         self.hide_mine_prompt()
         self.status_label.config(text="Minesweeper")
         self.game.start_game(mines, self.difficulty.get())
+        self.game.board.size = board
         self.build_board()
         
         # create once
