@@ -5,16 +5,18 @@ File Name: game_logic.py
 Description: Handles the player's standard interations with the Minesweeper board. 
     Includes --> 1) Keeping track of mines, 2) Placing flags, 3) Revealing cells, and 4) Victory/game-over states
 
-All Collaborators: Group 4, ChatGPT, Group 5
+All Collaborators: Group 4, ChatGPT, Group 5, Will
 
 Other sources for code: ChatGPT
 
 Date Created: 8/29/2025
 
-Last Updated: 9/26/2025
+Last Updated: 9/29/2025
 """
+import random   #use for random AI cell pick
 from board_manager import BoardManager
 from sound_manager import SoundManager
+
 
 class GameLogic:
     """
@@ -48,6 +50,8 @@ class GameLogic:
 
         self.first_click = True # Flag to indicate it is the first click
 
+        self.player_turn = True # Indicate that it is the player's turn
+
         self.sound_manager = sound_manager # Sound manager
 
     # Source: Original work combined with ChatGPT
@@ -68,6 +72,7 @@ class GameLogic:
         self.game_over = False
         self.victory = False
         self.first_click = True # ensure that first_click is set to True for resets
+        self.player_turn = True # Indicate that it is the player's turn
 
         self.sound_manager.play_background() # Play background music
 
@@ -117,6 +122,11 @@ class GameLogic:
 
         Output: None
         """
+        # if self.player_turn == False: #add logic for easy mode here.
+        #     #randomly pick a cell to reveal for the player
+        #     board_size = self.board.size #get the size of the board
+        #     row = random.randint(0, board_size - 1)
+        #     col = random.randint(0, board_size - 1)
 
         # Once the player gets a game-over, they may no longer play.
         if self.game_over:
@@ -126,6 +136,7 @@ class GameLogic:
         if self.first_click:
             self.board.initialize_board(self.total_mines, safe_cell=(row, col))
             self.first_click = False
+            self.player_turn = False #swap turn to AI after first click
 
         cell = self.board.get_cell(row, col) # The cell that the player clicked on
 
@@ -152,8 +163,35 @@ class GameLogic:
                     if 0 <= nr < self.board.size and 0 <= nc < self.board.size:
                         if self.board.get_cell(nr, nc).is_covered:
                             self.reveal_cell(nr, nc) # Recursive call of reveal_cell function
+        
+        # if self.player_turn == False: #swap turn between player and AI and vice versa
+        #     self.player_turn = True #swap from AI to player
+        # else:
+        #     self.player_turn = False #swap from player to AI
 
         self.check_victory() # Check for a victory state after every time a cell is revealed
+
+
+    def ai_reveal_cell(self):
+        """
+        Function that allows the AI to reveal a cell on its turn.
+
+        """
+
+        if self.game_over:
+            return
+
+        # AI randomly selects a covered, unflagged cell to reveal
+        covered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
+                         if self.board.get_cell(r, c).is_covered and not self.board.get_cell(r, c).is_flagged]
+
+        if not covered_cells:
+            return  # No cells left to reveal
+
+        row, col = random.choice(covered_cells)
+        self.reveal_cell(row, col)
+        self.player_turn = True
+        # Important, this is linked with input handler under handle left click
 
     # Source: ChatGPT, Group 5
     def check_victory(self):

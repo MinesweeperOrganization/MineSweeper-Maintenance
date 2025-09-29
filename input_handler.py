@@ -13,7 +13,7 @@ Date Created: 8/29/2025
 
 Last Updated: 9/26/2025
 """
-
+import time #use for AI delay
 from sound_manager import SoundManager
 
 class InputHandler:
@@ -35,12 +35,30 @@ class InputHandler:
     def handle_left_click(self, row, col):
         # Tell the game logic to reveal the clicked cell
         self.game.reveal_cell(row, col)
+ 
         # Update the visual board display's new state
         self.ui.update_board()
         # Check for victory or loss condition
         if self.game.game_over:
 
             # Pass victory status (true/false)
+            self.ui.show_game_over(self.game.victory)
+        else:
+            self.sound_manager.play_uncover() # Play uncover sound
+
+        self.game.player_turn = False #swap turn to AI after player click
+        self.ui.update_board() #update board before AI turn to show it is AI's turn
+
+        self.ui.root.after(2000, self.ai_turn) #delay AI turn by 2 seconds
+
+
+
+
+    def ai_turn(self):
+        self.game.ai_reveal_cell() #have AI reveal a cell
+        
+        self.ui.update_board() #update board after AI turn
+        if self.game.game_over:
             self.ui.show_game_over(self.game.victory)
         else:
             self.sound_manager.play_uncover() # Play uncover sound

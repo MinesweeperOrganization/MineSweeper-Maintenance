@@ -83,7 +83,19 @@ class UserInterface:
         self.hide_mine_prompt()
         self.game.start_game(mines)
         self.build_board()
-        self.status_label.config(text=f"Game in progress — Mines: {mines} | Flags remaining: {mines}")
+
+        # create once
+        self.status_var = tk.StringVar()
+        self.status_label = tk.Label(
+            self.root,
+            textvariable=self.status_var,
+            font=("Consolas", 12, "bold"),  # monospace helps width==chars
+            width=80,                       # fixed width in characters
+            anchor="w"                      # left-align inside the fixed box
+        )
+        self.status_label.pack(pady=5)
+        player_turn = "Player's Turn" if self.game.player_turn else "AI's Turn" # Determine whose turn it is
+        self.status_var.set(f"Game in progress — Mines: {mines} | Flags remaining: {mines} | Turn: {player_turn}")
 
     # Source: ChatGPT
     def hide_mine_prompt(self):
@@ -174,7 +186,9 @@ class UserInterface:
         # Update remaining flags in header
         flags_remaining = self.game.total_mines - self.game.flags
         if not self.game.game_over:
-            self.status_label.config(text=f"Game in progress — Mines: {self.game.total_mines} | Flags remaining: {flags_remaining}")
+            player_turn = "Player's Turn" if self.game.player_turn else "AI's Turn" # Determine whose turn it is
+            self.status_var.set(f"Game in progress — Mines: {self.game.total_mines} | Flags remaining: {self.game.total_mines} | Turn: {player_turn}")
+
         else:
             # If game_over, leave the status_label to show the result message elsewhere
             pass
