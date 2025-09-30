@@ -65,6 +65,28 @@ class BoardManager:
                     if 0 <= nr < self.size and 0 <= nc < self.size and self.board[nr][nc].is_mine #Count adjacent mines
                 )
 
+    #Source: MJ
+    def get_orthogonal_cells(self, row, col):
+        #Return a 4-wise tuple with all four orthogonal cells.
+        #Order is clockwise (Top, right, bottom, left)
+        #None indicates which edge the cell is on. Two nones indicate a corner cell
+        north = east = south = west = None #Initialize values at None
+        if col-1 > 0: #If the northern cell is within-bounds
+            north = self.get_cell(row, col-1)
+        
+        if row+1 < self.size: #If the Eastern cell is within-bounds
+            east = self.get_cell(row+1, col)
+
+        if col+1 < self.size: #If the Southern cell is within-bounds
+            south = self.get_cell(row, col+1)
+
+        if row-1 > 0: #If the Western cell is within-bounds
+            west = self.get_cell(row-1, col)
+        
+        return (north, east, south, west)
+
+
+
     # Source: ChatGPT
     def get_cell(self, row, col):
         # Return the cell dictionary at the specified position

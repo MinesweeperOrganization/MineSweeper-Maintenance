@@ -208,6 +208,12 @@ class GameLogic:
                     neighbors.append((r, c))
         return neighbors
 
+    def check_visibility(self, cell):
+        #Helper function for AI. Returns None if the cell is covered
+        if cell != None and cell.is_covered:
+            return None
+        return cell
+
     def ai_reveal_cell(self):
         """
         Function that allows the AI to reveal a cell on its turn.
@@ -229,7 +235,7 @@ class GameLogic:
             self.reveal_cell(row, col)
             self.player_turn = True
             # Important, this is linked with input handler under handle left click
-        elif self.difficulty == "Medium": #filler of easy for now
+        elif self.difficulty == "Medium":
             #Gets all revealed numbered cells
             numbered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
                             if not self.board.get_cell(r, c).is_covered and self.board.get_cell(r, c).adjacent > 0]
@@ -258,17 +264,58 @@ class GameLogic:
                 print(f"AI randomly revealed cell at ({row}, {col})")
                 self.player_turn = True
             # Important, this is linked with input handler under handle left click
-        elif self.difficulty == "Hard": #filler of easy for now
-            # AI randomly selects a covered, unflagged cell to reveal
-            covered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
+        elif self.difficulty == "Hard":
+            #Gets all revealed numbered cells
+            numbered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
+                            if not self.board.get_cell(r, c).is_covered and self.board.get_cell(r, c).adjacent > 0]
+            #iterates through all numbered cells 
+            for row, col in numbered_cells:
+
+                if self.board.get_cell(row,col).adjacent == 2: #If the cell has 2 adjacent mines.
+                    north, east, south, west = self.board.get_orthogonal_cells(row, col) #Get the orthogonal cells
+                    north = self.check_visibility(north) #Enforce visibility, set any covered cells to None
+                    east = self.check_visibility(east)
+                    south = self.check_visibility(south)
+                    west = self.check_visibility(west)
+                    check_n_s = (north != None and south != None) and (north.adjacent == 1 and south.adjacent == 1) #Check for a vertical 1-2-1 pattern
+                    check_e_w = (east != None and west != None) and (east.adjacent == 1 and west.adjacent == 1) #Check for a horizontal 1-2-1 pattern
+                    check_1_2_1 = check_n_s or check_e_w #Check if there is a 1-2-1 pattern
+                    covered_neighbors0 = self.get_covered_neighbors(row,col) #Get the list of covered neighbors
+                    if check_1_2_1 and len(covered_neighbors0) == 3: #If there is a 1-2-1 pattern AND there are 3 covered neighbors
+                        #print(f"Found a 1-2-1 pattern at {row},{col}")
+                        same_row = (covered_neighbors0[0][0] == covered_neighbors0[1][0] == covered_neighbors0[2][0])
+                        same_col = (covered_neighbors0[0][1] == covered_neighbors0[1][1] == covered_neighbors0[2][1])
+                        if same_row:
+                            print(f"Applied 1-2-1 rule at {row},{col}")
+                            nr, nc = covered_neighbors0[1]
+                            self.reveal_cell(nr, nc)
+                        elif same_col:
+                            print(f"Applied 1-2-1 rule at {row},{col}")
+                            nr, nc = covered_neighbors0[1]
+                            self.reveal_cell(nr,nc)
+
+                #list of covered neighbors
+                covered_neighbors = self.get_covered_neighbors(row, col)
+                if len(covered_neighbors) == self.board.get_cell(row, col).adjacent - len(self.get_flagged_neighbors(row, col)):
+                    for nr, nc in covered_neighbors:
+                        self.toggle_flag(nr, nc)
+                    self.player_turn = True
+                if len(self.get_flagged_neighbors(row, col)) == self.board.get_cell(row, col).adjacent:
+                    covered_neighbors2 = self.get_covered_neighbors(row, col)
+                    for nr, nc in covered_neighbors2:
+                        self.reveal_cell(nr, nc)
+                    self.player_turn = True
+            if self.player_turn == False:
+                covered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
                             if self.board.get_cell(r, c).is_covered and not self.board.get_cell(r, c).is_flagged]
 
-            if not covered_cells:
-                return  # No cells left to reveal
+                if not covered_cells:
+                    return  # No cells left to reveal
 
-            row, col = random.choice(covered_cells)
-            self.reveal_cell(row, col)
-            self.player_turn = True
+                row, col = random.choice(covered_cells)
+                self.reveal_cell(row, col)
+                print(f"AI randomly revealed cell at ({row}, {col})")
+                self.player_turn = True
             # Important, this is linked with input handler under handle left click
         
 
