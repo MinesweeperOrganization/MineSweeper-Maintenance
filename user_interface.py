@@ -17,6 +17,7 @@ Last Updated: 9/26/2025
 import tkinter as tk
 from tkinter import messagebox
 from sound_manager import SoundManager
+from timer import TimeManager
 
 # Source: Original work
 # Number colors
@@ -38,6 +39,7 @@ class UserInterface:
         self.game = game_logic  # Game logic
         self.input = input_handler  # Left and right click actions
         self.buttons = []  # Button Widgets
+        
         
         # Header: mine input + start
         self.header_frame = tk.Frame(self.root)
@@ -84,6 +86,8 @@ class UserInterface:
 
         # Sound manager
         self.sound_manager = sound_manager
+        self.timer = TimeManager()
+        self.timer.start_timer()
 
     # Source: ChatGPT
     def start_game(self):
@@ -221,9 +225,13 @@ class UserInterface:
 
     # Source: ChatGPT
     def show_game_over(self, victory):
+        self.timer.stop_timer()
+        mins, secs = divmod(int(self.timer.elapsed), 60) 
+        time_str = f"{mins:02}:{secs:02}"
         # Display win or lose and pop up to replay
         result = "You Win! 🎉" if victory else "Game Over 💥"
-        choice = messagebox.askyesnocancel(result, "Play Again?\nYes = Same Mines\nNo = Choose New Mines\nCancel = Quit")
+        message = "Your Game time:"+ str(time_str)+ "\nPlay Again?\nYes = Same Mines\nNo = Choose New Mines\nCancel = Quit"
+        choice = messagebox.askyesnocancel(result, message)
 
         if choice is True: 
             # Restart with same mine count
