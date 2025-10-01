@@ -217,7 +217,7 @@ class UserInterface:
         flags_remaining = self.game.total_mines - self.game.flags
         if not self.game.game_over:
             player_turn = "Player's Turn" if self.game.player_turn else "AI's Turn" # Determine whose turn it is
-            self.status_var.set(f"Game in progress — Mines: {self.game.total_mines} | Flags remaining: {self.game.total_mines} | Turn: {player_turn}")
+            self.status_var.set(f"Game in progress — Mines: {self.game.total_mines} | Flags remaining: {self.game.total_mines-self.game.flags} | Turn: {player_turn}")
 
         else:
             # If game_over, leave the status_label to show the result message elsewhere
