@@ -336,6 +336,9 @@ class GameLogic:
                 print(f"AI randomly revealed cell at ({row}, {col})")
                 self.player_turn = True
             # Important, this is linked with input handler under handle left click
+        else:
+            self.player_turn = True
+            return
         
 
     # Source: ChatGPT, Group 5

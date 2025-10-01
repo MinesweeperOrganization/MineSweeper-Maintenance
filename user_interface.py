@@ -51,10 +51,12 @@ class UserInterface:
         self.board_entry = tk.Entry(self.header_frame, width=5, font=("Segoe UI", 11))
         self.board_entry.insert(0, "10")
         self.start_button = tk.Button(self.header_frame, text="Start Game", command=self.start_game, font=("Segoe UI", 10, "bold"))
+        self.ai_label = tk.Label(self.header_frame, text="AI player mode:", font=("Segoe UI", 11))
         self.difficulty = tk.StringVar(value="Easy")
         self.easy_button = tk.Radiobutton(self.header_frame, text="Easy", variable=self.difficulty, value="Easy", font=("Segoe UI", 10))
         self.medium_button = tk.Radiobutton(self.header_frame, text="Medium", variable=self.difficulty, value="Medium", font=("Segoe UI", 10))
         self.hard_button = tk.Radiobutton(self.header_frame, text="Hard", variable=self.difficulty, value="Hard", font=("Segoe UI", 10))
+        self.noAI_button = tk.Radiobutton(self.header_frame, text="None", variable=self.difficulty, value="None", font=("Segoe UI", 10))
 
         
         self.header_frame.pack(pady=5)
@@ -62,10 +64,12 @@ class UserInterface:
         self.mine_entry.pack(side=tk.LEFT)
         self.board_label.pack(side=tk.LEFT)
         self.board_entry.pack(side=tk.LEFT)
+        self.ai_label.pack(side=tk.LEFT)
         self.start_button.pack(side=tk.LEFT, padx=5)
         self.easy_button.pack(side=tk.LEFT, padx=5)
         self.medium_button.pack(side=tk.LEFT, padx=5)
         self.hard_button.pack(side=tk.LEFT, padx=5)
+        self.noAI_button.pack(side=tk.LEFT, padx=5)
 
 
 

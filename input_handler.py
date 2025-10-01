@@ -47,7 +47,10 @@ class InputHandler:
             else:
                 if cell_revealed:
                     self.sound_manager.play_uncover() # Play uncover sound if cell is revealed
-                    self.game.player_turn = False #swap turn to AI after player click
+                    if self.game.difficulty == "None":
+                        self.game.player_turn = True
+                    else:
+                        self.game.player_turn = False #swap turn to AI after player click
 
                 self.ui.update_board() #update board before AI turn to show it is AI's turn
 
