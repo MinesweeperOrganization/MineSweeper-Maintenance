@@ -11,7 +11,7 @@ Other sources for code: ChatGPT
 
 Date Created: 8/29/2025
 
-Last Updated: 9/29/2025
+Last Updated: 9/30/2025
 """
 import random   #use for random AI cell pick
 from board_manager import BoardManager
@@ -123,7 +123,7 @@ class GameLogic:
 
         Input: The x/y coordinates of the cell that the player clicks on 
 
-        Output: None
+        Output: True if cell is revealed, False otherwise
         """
         # if self.player_turn == False: #add logic for easy mode here.
         #     #randomly pick a cell to reveal for the player
@@ -133,7 +133,7 @@ class GameLogic:
 
         # Once the player gets a game-over, they may no longer play.
         if self.game_over:
-            return
+            return False
         
         # If it is the first click, initialize the board and set first_click to False
         if self.first_click:
@@ -145,7 +145,7 @@ class GameLogic:
 
         # A cell may not be revealed if: It has a flag on it, or if it has already been revealed.
         if cell.is_flagged or not cell.is_covered:
-            return
+            return False
         
         # Reveal the cell to the player
         cell.is_covered = False
@@ -155,7 +155,7 @@ class GameLogic:
             self.game_over = True
             self.victory = False
             self.sound_manager.play_game_over() # Play game over sound
-            return
+            return True
 
         # If the revealed cell has no adjacent mines, recursively reveal all surrounding cells.
         if cell.adjacent == 0:
@@ -173,6 +173,8 @@ class GameLogic:
         #     self.player_turn = False #swap from player to AI
 
         self.check_victory() # Check for a victory state after every time a cell is revealed
+
+        return True
 
     def get_covered_neighbors(self, row, col):
         """

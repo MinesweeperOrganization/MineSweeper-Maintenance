@@ -11,7 +11,7 @@ Other sources for code: ChatGPT
 
 Date Created: 8/29/2025
 
-Last Updated: 9/26/2025
+Last Updated: 9/30/2025
 """
 # ----- user_interface.py -----
 import tkinter as tk
