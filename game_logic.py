@@ -295,15 +295,17 @@ class GameLogic:
                         if same_row:
                             print(f"Applied 1-2-1 rule at {row},{col}")
                             nr, nc = covered_neighbors0[1]
-                            self.reveal_cell(nr, nc)
-                            self.player_turn = True
-                            applied = True
+                            if not applied:
+                                self.reveal_cell(nr, nc)
+                                self.player_turn = True
+                                applied = True
                         elif same_col:
                             print(f"Applied 1-2-1 rule at {row},{col}")
                             nr, nc = covered_neighbors0[1]
-                            self.reveal_cell(nr,nc)
-                            self.player_turn = True
-                            applied = True
+                            if not applied:
+                                self.reveal_cell(nr,nc)
+                                self.player_turn = True
+                                applied = True
 
                 #list of covered neighbors
             for row, col in numbered_cells:
