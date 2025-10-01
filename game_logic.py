@@ -236,6 +236,7 @@ class GameLogic:
             row, col = random.choice(covered_cells)
             self.reveal_cell(row, col)
             self.player_turn = True
+            return
             # Important, this is linked with input handler under handle left click
         elif self.difficulty == "Medium":
             #Gets all revealed numbered cells
@@ -249,11 +250,14 @@ class GameLogic:
                     for nr, nc in covered_neighbors:
                         self.toggle_flag(nr, nc)
                     self.player_turn = True
+            for row, col in numbered_cells:
                 if len(self.get_flagged_neighbors(row, col)) == self.board.get_cell(row, col).adjacent:
                     covered_neighbors2 = self.get_covered_neighbors(row, col)
                     for nr, nc in covered_neighbors2:
                         self.reveal_cell(nr, nc)
-                    self.player_turn = True
+                        self.player_turn = True
+                        return
+                    
             if self.player_turn == False:
                 covered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
                             if self.board.get_cell(r, c).is_covered and not self.board.get_cell(r, c).is_flagged]
@@ -291,22 +295,30 @@ class GameLogic:
                             print(f"Applied 1-2-1 rule at {row},{col}")
                             nr, nc = covered_neighbors0[1]
                             self.reveal_cell(nr, nc)
+                            self.player_turn = True
+                            return
                         elif same_col:
                             print(f"Applied 1-2-1 rule at {row},{col}")
                             nr, nc = covered_neighbors0[1]
                             self.reveal_cell(nr,nc)
+                            self.player_turn = True
+                            return
 
                 #list of covered neighbors
+            for row, col in numbered_cells:
                 covered_neighbors = self.get_covered_neighbors(row, col)
                 if len(covered_neighbors) == self.board.get_cell(row, col).adjacent - len(self.get_flagged_neighbors(row, col)):
                     for nr, nc in covered_neighbors:
                         self.toggle_flag(nr, nc)
                     self.player_turn = True
+            for row, col in numbered_cells:    
                 if len(self.get_flagged_neighbors(row, col)) == self.board.get_cell(row, col).adjacent:
                     covered_neighbors2 = self.get_covered_neighbors(row, col)
                     for nr, nc in covered_neighbors2:
                         self.reveal_cell(nr, nc)
-                    self.player_turn = True
+                        self.player_turn = True
+                        return
+                    
             if self.player_turn == False:
                 covered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
                             if self.board.get_cell(r, c).is_covered and not self.board.get_cell(r, c).is_flagged]
