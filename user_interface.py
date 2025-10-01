@@ -241,6 +241,7 @@ class UserInterface:
         elif choice is False:
             # Ask for new mine count
             self.show_mine_prompt(default_same=self.game.total_mines)
+            self.status_var.set("")
         else:
             self.root.destroy()
 
