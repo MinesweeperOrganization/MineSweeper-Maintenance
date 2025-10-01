@@ -272,6 +272,7 @@ class GameLogic:
             # Important, this is linked with input handler under handle left click
         elif self.difficulty == "Hard":
             #Gets all revealed numbered cells
+            applied = False
             numbered_cells = [(r, c) for r in range(self.board.size) for c in range(self.board.size)
                             if not self.board.get_cell(r, c).is_covered and self.board.get_cell(r, c).adjacent > 0]
             #iterates through all numbered cells 
@@ -296,13 +297,13 @@ class GameLogic:
                             nr, nc = covered_neighbors0[1]
                             self.reveal_cell(nr, nc)
                             self.player_turn = True
-                            return
+                            applied = True
                         elif same_col:
                             print(f"Applied 1-2-1 rule at {row},{col}")
                             nr, nc = covered_neighbors0[1]
                             self.reveal_cell(nr,nc)
                             self.player_turn = True
-                            return
+                            applied = True
 
                 #list of covered neighbors
             for row, col in numbered_cells:
@@ -311,6 +312,8 @@ class GameLogic:
                     for nr, nc in covered_neighbors:
                         self.toggle_flag(nr, nc)
                     self.player_turn = True
+                    if applied:
+                        return
             for row, col in numbered_cells:    
                 if len(self.get_flagged_neighbors(row, col)) == self.board.get_cell(row, col).adjacent:
                     covered_neighbors2 = self.get_covered_neighbors(row, col)
