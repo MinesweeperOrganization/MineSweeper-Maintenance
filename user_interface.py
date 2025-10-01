@@ -49,6 +49,7 @@ class UserInterface:
         self.mine_entry.bind("<Return>", lambda event: self.start_game())  # Bind Enter key to start game
         self.board_label = tk.Label(self.header_frame, text="Enter board size (10-20):", font=("Segoe UI", 11))
         self.board_entry = tk.Entry(self.header_frame, width=5, font=("Segoe UI", 11))
+        self.board_entry.insert(0, "10")
         self.start_button = tk.Button(self.header_frame, text="Start Game", command=self.start_game, font=("Segoe UI", 10, "bold"))
         self.difficulty = tk.StringVar(value="Easy")
         self.easy_button = tk.Radiobutton(self.header_frame, text="Easy", variable=self.difficulty, value="Easy", font=("Segoe UI", 10))
@@ -87,7 +88,7 @@ class UserInterface:
         # Sound manager
         self.sound_manager = sound_manager
         self.timer = TimeManager()
-        self.timer.start_timer()
+        #self.timer.start_timer()
 
     # Source: ChatGPT
     def start_game(self):
@@ -113,6 +114,7 @@ class UserInterface:
         self.game.start_game(mines, self.difficulty.get())
         self.game.board.size = board
         self.build_board()
+        self.timer.start_timer()
         
         # create once
         self.status_var = tk.StringVar()
@@ -237,6 +239,7 @@ class UserInterface:
             # Restart with same mine count
             self.game.start_game(self.game.total_mines, self.difficulty.get())
             self.build_board()
+            self.timer.start_timer()
             self.status_var.set(f"Game in progress — Mines: {self.game.total_mines} | Flags remaining: {self.game.total_mines} | Turn: Player's Turn")
         elif choice is False:
             # Ask for new mine count

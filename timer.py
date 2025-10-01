@@ -6,6 +6,9 @@ class TimeManager:
         self.elapsed = 0.0
 
     def start_timer(self):
+        self.start_time = 0.0
+        self.end_time = 0.0
+        self.elapsed = 0.0
         self.start_time = time.time()
 
     def stop_timer(self):
