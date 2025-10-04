@@ -1,0 +1,4 @@
+Our methodology for estimating the hours was the following:
+First, we had our scrum meeting, where we described each task needed to be completed.
+Then, we put this task on our GitHub project board. There, we added an element for estimated time. There we talked as a group and esimtated in hours how long we thought the task would take. If it was longer than several hours, we would break the task into smaller chunks. Typically we rounded to the nearest half hour, so like 1.5 hours or 2 hours. For extremely small tasks, we included a .25 hours.
+The estimates are included in the hours documentation this folder.
