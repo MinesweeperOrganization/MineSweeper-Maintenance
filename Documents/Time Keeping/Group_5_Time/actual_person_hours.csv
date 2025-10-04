@@ -1,0 +1,17 @@
+#total of 12.25 hours
+Task Name, Time (Hours)
+Implement medium difficulty, 1
+fix turn taking, 0.5
+Implement sound manager, 2
+Fix remaining flag count, 0.25
+Bug fixes, 0.25
+Hard_AI, 2
+revise_UML_diagram, 1
+change board size, 0.5
+timer, 1
+fix timer, .5
+Disable AI, .5
+Create initial AI module to alternate between player and AI, 1.5
+Implement New Win Loss Logic, .5
+Add Difficulty Choice, .5
+Label Glitches Fix, .25
